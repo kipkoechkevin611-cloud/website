@@ -277,7 +277,7 @@ export default function AdminProducts() {
                     <Button
                       key={page}
                       size="sm"
-                      variant={currentPage === page ? 'default' : 'outline'}
+                      variant={currentPage === page ? 'primary' : 'outline'}
                       onClick={() => handlePageChange(page)}
                       className={currentPage === page ? 'bg-pink-600 hover:bg-pink-700' : ''}
                     >
