@@ -1,25 +1,31 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET is not defined in environment variables');
-}
-
 export interface JWTPayload {
   userId: string;
   email: string;
   isAdmin: boolean;
 }
 
+const getJWTSecret = (): string => {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET && process.env.NODE_ENV === "production") {
+    throw new Error('JWT_SECRET is not defined in environment variables');
+  }
+  if (!JWT_SECRET) {
+    console.warn('JWT_SECRET not set - using fallback for development');
+    return 'your-secret-key-change-in-production';
+  }
+  return JWT_SECRET;
+};
+
 export const generateToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, getJWTSecret(), { expiresIn: '7d' });
 };
 
 export const verifyToken = (token: string): JWTPayload => {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, getJWTSecret()) as JWTPayload;
   } catch {
     throw new Error('Invalid or expired token');
   }

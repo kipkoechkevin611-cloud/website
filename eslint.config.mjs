@@ -1,13 +1,10 @@
-import { defineConfig, globalIgnores } from "eslint/config";
+import { defineConfig } from "eslint/config";
+import next from "eslint-config-next";
 
 const eslintConfig = defineConfig([
+  ...next,
   {
     ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
-  },
-  {
-    rules: {
-      // Add your custom rules here
-    },
   },
 ]);
 
