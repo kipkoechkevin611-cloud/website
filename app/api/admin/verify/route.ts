@@ -5,48 +5,40 @@ export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('adminToken')?.value;
 
-    // Disable admin verification - allow direct access
-    // if (!token) {
-    //   return NextResponse.json(
-    //     { error: 'No token provided' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!token) {
+      return NextResponse.json(
+        { error: 'No token provided' },
+        { status: 401 }
+      );
+    }
 
-    const decoded = token ? verifyToken(token) : null;
+    const decoded = verifyToken(token);
 
-    // Disable admin verification - allow direct access
-    // if (!decoded) {
-    //   return NextResponse.json(
-    //     { error: 'Invalid or expired token' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!decoded) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
 
     // Accept access if isAdmin === true OR role === "admin"
-    // const isAdmin = decoded?.isAdmin === true;
-    // const hasAdminRole = decoded?.role === 'admin';
+    const isAdmin = decoded.isAdmin === true;
+    const hasAdminRole = decoded.role === 'admin';
 
-    // if (!isAdmin && !hasAdminRole) {
-    //   console.log('Verify API access denied:', {
-    //     isAdmin: decoded?.isAdmin,
-    //     role: decoded?.role,
-    //     isAdminType: typeof decoded?.isAdmin,
-    //     roleType: typeof decoded?.role
-    //   });
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!isAdmin && !hasAdminRole) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
       user: {
-        id: decoded?.userId || 'admin',
-        email: decoded?.email || 'admin@ilosunot.com',
-        isAdmin: true,
-        role: 'admin',
+        id: decoded.userId,
+        email: decoded.email,
+        isAdmin: decoded.isAdmin,
+        role: decoded.role,
       },
     });
   } catch (error) {

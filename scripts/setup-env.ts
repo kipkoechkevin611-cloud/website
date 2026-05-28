@@ -18,10 +18,18 @@ function setupEnvFile() {
   // Generate secrets if not present
   const jwtSecret = envContent.match(/JWT_SECRET=(.+)/)?.[1] || generateSecret();
   const nextauthSecret = envContent.match(/NEXTAUTH_SECRET=(.+)/)?.[1] || generateSecret();
-  const mongodbUri = envContent.match(/MONGODB_URI=(.+)/)?.[1] || 'mongodb://127.0.0.1:27017/ecommerce';
+  const mongodbUri = envContent.match(/MONGODB_URI=(.+)/)?.[1];
   const nextauthUrl = envContent.match(/NEXTAUTH_URL=(.+)/)?.[1] || 'http://localhost:3001';
   const adminEmail = envContent.match(/ADMIN_EMAIL=(.+)/)?.[1] || 'kipkoechkevin611@gmaill.com';
   const adminPassword = envContent.match(/ADMIN_PASSWORD=(.+)/)?.[1] || 'admin123';
+
+  // Require MongoDB URI for production deployment
+  if (!mongodbUri) {
+    console.error('❌ MONGODB_URI is required in .env.local');
+    console.error('   Please add your MongoDB Atlas connection string:');
+    console.error('   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ecommerce?appName=Cluster0');
+    process.exit(1);
+  }
 
   // Create/update .env.local
   const newEnvContent = `# MongoDB

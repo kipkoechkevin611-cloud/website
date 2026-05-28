@@ -44,8 +44,16 @@ export default function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const checkAuth = async () => {
-    // Disable auth check - allow direct access
-    setIsAdmin(true);
+    try {
+      const response = await fetch('/api/admin/verify');
+      if (response.ok) {
+        setIsAdmin(true);
+      } else {
+        router.push('/admin/login');
+      }
+    } catch (error) {
+      router.push('/admin/login');
+    }
   };
 
   const fetchStats = async () => {

@@ -4,8 +4,14 @@ dotenv.config({ path: '.env.local' });
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-// Set default MongoDB URI if not in .env.local
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ecommerce';
+// MongoDB URI from environment variable (required)
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI environment variable is required');
+  console.error('   Please set MONGODB_URI in your .env.local file');
+  process.exit(1);
+}
 
 // Define User schema inline for seed script
 const UserSchema = new mongoose.Schema({

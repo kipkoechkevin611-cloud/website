@@ -53,14 +53,13 @@ function validateProductData(body: {
 
 export async function POST(request: NextRequest) {
   try {
-    // Disable admin verification - allow direct access
-    // const isAdmin = await verifyAdmin(request);
-    // if (!isAdmin) {
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized. Admin access required.' },
-    //     { status: 401 }
-    //   );
-    // }
+    const isAdmin = await verifyAdmin(request);
+    if (!isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Admin access required.' },
+        { status: 401 }
+      );
+    }
 
     await connectDB();
     const body = await request.json();
