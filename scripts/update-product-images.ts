@@ -101,7 +101,7 @@ async function updateProductImages() {
     console.log(`\nUpdating ${products.length} product(s):\n`);
 
     for (const product of products) {
-      const newImage = imageMap[product.name];
+      const newImage = imageMap[product.name as keyof typeof imageMap];
       if (newImage) {
         const oldImage = product.image;
         product.image = `/assets/products/${newImage}`;
