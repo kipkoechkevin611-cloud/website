@@ -31,7 +31,7 @@ export default function Home() {
       description: 'Fast Delivery to Nakuru, Kericho & Bomet',
       cta: 'Shop Now',
       gradient: 'from-pink-500 via-pink-600 to-rose-500',
-      image: '/assets/products/Car Android Player 10  11,500.jpeg',
+      image: null,
     },
     {
       title: 'Trusted Christian Business',
@@ -39,7 +39,7 @@ export default function Home() {
       description: 'Affordable Prices, Premium Quality',
       cta: 'Explore Products',
       gradient: 'from-rose-500 via-orange-400 to-amber-400',
-      image: '/assets/products/Hisense 65 Q6 Series QLED SMART TV 4K @ 73,000.jpeg',
+      image: null,
     },
     {
       title: '24-48 Hour Delivery',
@@ -47,7 +47,7 @@ export default function Home() {
       description: 'Payment Before Delivery - Safe & Secure',
       cta: 'Order Now',
       gradient: 'from-purple-500 via-pink-500 to-rose-400',
-      image: '/assets/products/Vision Plus 55 QLED VIDAA 4K TV @42,000.jpeg',
+      image: null,
     },
   ];
 
@@ -120,24 +120,6 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className={`absolute inset-0 bg-gradient-to-br ${slide.gradient}`}
           >
-            {/* Blurred product image background */}
-            {slide.image && (
-              <div className="absolute inset-0">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  className="object-cover blur-sm opacity-30"
-                  priority
-                />
-              </div>
-            )}
-
-            {/* Elegant overlay pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMSI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoLTJ2LTJoLTJ2LTJoLTJ2MmgydjJoMnYyaDJ2MmgydjJoLTJ2LTJoLTJ2LTJoLTJ2LTJoLTJ2MmgydjJoMnYyaDJ2MmgydjJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')]"></div>
-            </div>
-
             {/* Gradient overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
 
@@ -347,14 +329,18 @@ export default function Home() {
                     href={`/product/${product._id}`}
                     className="bg-white rounded-elegant-lg shadow-elegant overflow-hidden hover:shadow-elegant-lg transition-all group block card-hover"
                   >
-                    <div className="relative h-64 bg-gradient-to-br from-pink-100 to-rose-100 group-hover:from-pink-200 group-hover:to-rose-200 transition-colors">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        width={400}
-                        height={400}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative h-64 bg-gradient-to-br from-pink-100 to-rose-100 group-hover:from-pink-200 group-hover:to-rose-200 transition-colors flex items-center justify-center">
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          width={400}
+                          height={400}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="text-6xl">📦</div>
+                      )}
                       {product.featured && (
                         <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
                           Featured
